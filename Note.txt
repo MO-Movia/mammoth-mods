@@ -1,0 +1,18 @@
+Have modified this library to acheive following functionality.
+The customization made only works for mo customers only.
+
+Functionality added are
+--------------------------
+
+Handling Textboxes and  Group elements
+Chapter header ie images and text wrapped inside a table
+Horizontal rule
+Text color
+
+Build Procedure
+------------------
+
+Comment Line No 145 in document-to-html.js.
+npm install
+Copy the `mammoth.browser.js` file from root and paste it inside the Knite-ingest-utility `@mo_mammoth` folder.
+Before copying uncomment the above file from `mammoth.browser.js` bundle file. 

@@ -14,6 +14,7 @@ meaning that the conversion is unlikely to be perfect for more complicated docum
 Mammoth works best if you only use styles to semantically mark up your document.
 
 The following features are currently supported:
+* Please read Note.txt file for more details.
 
 * Headings.
 
