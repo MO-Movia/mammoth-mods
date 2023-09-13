@@ -120,17 +120,25 @@ For instance:
 
 ### Library
 
-In node.js, mammoth can be required in the usual way:
+In node.js and the browser, mammoth can be required in the usual way:
 
 ```javascript
 var mammoth = require("mammoth");
 ```
 
-To generate a standalone JavaScript file for the browser,
-use `mammoth.browser.js` (generate using `make setup` if it is not already present).
+Alternatively, you may use the standalone JavaScript file `mammoth.browser.js`,
+which includes both mammoth and its dependencies.
 This uses any loaded module system.
+For instance, when using CommonJS:
+
+```javascript
+var mammoth = require("mammoth/mammoth.browser");
+```
+
 If no module system is found,
 `mammoth` is set as a window global.
+
+The file can be generated using `make setup` during development.
 
 #### Basic conversion
 
@@ -144,7 +152,9 @@ mammoth.convertToHtml({path: "path/to/document.docx"})
         var html = result.value; // The generated HTML
         var messages = result.messages; // Any messages, such as warnings during conversion
     })
-    .done();
+    .catch(function(error) {
+        console.error(error);
+    });
 ```
 
 Note that `mammoth.convertToHtml` returns a [promise](http://promises-aplus.github.io/promises-spec/).
@@ -159,7 +169,9 @@ mammoth.extractRawText({path: "path/to/document.docx"})
         var text = result.value; // The raw text
         var messages = result.messages;
     })
-    .done();
+    .catch(function(error) {
+        console.error(error);
+    });
 ```
 
 #### Custom style map
@@ -433,6 +445,7 @@ it will use the embedded style map.
 * `styleMap`: the style map to embed.
 
 * Returns a promise.
+  Call `toArrayBuffer()` on the value inside the promise to get an `ArrayBuffer` representing the new document.
   Call `toBuffer()` on the value inside the promise to get a `Buffer` representing the new document.
 
 For instance:
@@ -463,10 +476,21 @@ This creates an `<img>` element for each image in the original docx.
 This argument is the image element being converted,
 and has the following properties:
 
-* `read([encoding])`: read the image file with the specified encoding.
-  If no encoding is specified, a `Buffer` is returned.
-
 * `contentType`: the content type of the image, such as `image/png`.
+
+* `readAsArrayBuffer()`: read the image file as an `ArrayBuffer`.
+  Returns a promise of an `ArrayBuffer`.
+
+* `readAsBuffer()`: read the image file as a `Buffer`.
+  Returns a promise of a `Buffer`.
+  This is not supported in browsers unless a `Buffer` polyfill has been used.
+
+* `readAsBase64String()`: read the image file as a base64-encoded string.
+  Returns a promise of a `string`.
+
+* `read([encoding])` (deprecated): read the image file with the specified encoding.
+  If an encoding is specified, a promise of a `string` is returned.
+  If no encoding is specified, a promise of a `Buffer` is returned.
 
 `func` should return an object (or a promise of an object) of attributes for the `<img>` element.
 At a minimum, this should include the `src` attribute.
@@ -477,7 +501,7 @@ For instance, the following replicates the default image conversion:
 
 ```javascript
 mammoth.images.imgElement(function(image) {
-    return image.read("base64").then(function(imageBuffer) {
+    return image.readAsBase64String().then(function(imageBuffer) {
         return {
             src: "data:" + image.contentType + ";base64," + imageBuffer
         };
