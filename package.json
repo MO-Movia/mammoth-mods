@@ -1,6 +1,6 @@
 {
   "name": "@modusoperandi/mammoth",
-  "version": "1.7.0-9",
+  "version": "1.7.0-10",
   "author": "Michael Williamson <mike@zwobble.org>",
   "description": "Convert Word documents from docx to simple HTML and Markdown",
   "keywords": [
@@ -24,6 +24,7 @@
     "dingbat-to-unicode": "^1.0.1",
     "jszip": "^3.7.1",
     "lop": "^0.4.1",
+    "path": "^0.12.7",
     "path-is-absolute": "^1.0.0",
     "underscore": "^1.13.1",
     "xmlbuilder": "^10.0.0"
