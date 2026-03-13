@@ -1,6 +1,6 @@
 {
   "name": "@modusoperandi/mammoth",
-  "version": "1.7.0-8",
+  "version": "1.7.0-9",
   "author": "Michael Williamson <mike@zwobble.org>",
   "description": "Convert Word documents from docx to simple HTML and Markdown",
   "keywords": [
@@ -14,7 +14,7 @@
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mwilliamson/mammoth.js.git"
+    "url": "https://github.com/MO-Movia/mammoth-mods.git"
   },
   "dependencies": {
     "@xmldom/xmldom": "^0.8.6",
@@ -53,7 +53,7 @@
     "pretest": "eslint lib test",
     "test": "mocha 'test/**/*.tests.js'",
     "check-typescript": "tsc --noEmit lib/index.d.ts",
-    "prepare": "npm run prepare-browser-min",
+    "prepare": "npm run build:clean",
     "build:clean": "rm -rf mammoth.browser.js && rm -rf mammoth.browser.min.js",
     "prepare-browser-min": "npm run build:clean && npm run app-browserify && npm run app-uglify",
     "app-browserify": "browserify lib/index.js --standalone mammoth -p browserify-prepend-licenses > mammoth.browser.js",
