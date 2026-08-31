@@ -30,7 +30,7 @@
     "xmlbuilder": "^10.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.2.5",
+    "@types/node": "^26.4.0",
     "browserify": "~13.0.1",
     "browserify-prepend-licenses": "~1.0.0",
     "duck": "^0.1.12",
