@@ -1,6 +1,6 @@
 {
   "name": "@modusoperandi/mammoth",
-  "version": "1.13.0-0",
+  "version": "1.13.0",
   "description": "Convert Word documents from docx to simple HTML",
   "keywords": [
     "docx",
