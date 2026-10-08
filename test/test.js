@@ -1,11 +1,13 @@
-var path = require("path");
+import {describe, it} from "mocha";
 
-
-var root = path.dirname(__dirname);
-    
-module.exports = function(testModule) {
-    var tests = testModule.exports[path.relative(root, testModule.filename)] = {};
-    return function(name, func) {
-        tests[name] = func;
-    };
-};
+export default function test(name, func) {
+    if (typeof func === "object" && func !== null) {
+        describe(name, function() {
+            Object.keys(func).forEach(function(key) {
+                test(key, func[key]);
+            });
+        });
+    } else {
+        it(name, func);
+    }
+}

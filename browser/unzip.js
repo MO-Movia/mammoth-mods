@@ -1,8 +1,5 @@
-var promises = require("../lib/promises");
-var zipfile = require("../lib/zipfile");
-
-exports.openZip = openZip;
-
+import * as promises from "../lib/promises.js";
+import * as zipfile from "../lib/zipfile.js";
 function openZip(options) {
     if (options.arrayBuffer) {
         return promises.resolve(zipfile.openArrayBuffer(options.arrayBuffer));
@@ -10,3 +7,5 @@ function openZip(options) {
         return promises.reject(new Error("Could not find file in options"));
     }
 }
+
+export {openZip};

@@ -1,9 +1,6 @@
-var assert = require("assert");
-
-var test = require("../test")(module);
-var htmlPaths = require("../../lib/styles/html-paths");
-
-
+import test from "../test.js";
+import assert from "assert";
+import * as htmlPaths from "../../lib/styles/html-paths.js";
 test("element can match multiple tag names", function() {
     var pathPart = htmlPaths.element(["ul", "ol"]);
     assert.ok(pathPart.matchesElement({tagName: "ul"}));
@@ -17,4 +14,3 @@ test("element matches if attributes are the same", function() {
     assert.ok(!pathPart.matchesElement({tagName: "p", attributes: {"class": "tip help"}}));
     assert.ok(pathPart.matchesElement({tagName: "p", attributes: {"class": "tip"}}));
 });
-

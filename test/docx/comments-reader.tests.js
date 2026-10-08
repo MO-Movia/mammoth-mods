@@ -1,13 +1,10 @@
-var assert = require("assert");
-
-var createCommentsReader = require("../../lib/docx/comments-reader").createCommentsReader;
-var createBodyReader = require("../../lib/docx/body-reader").createBodyReader;
-var stylesReader = require("../../lib/docx/styles-reader");
-var documents = require("../../lib/documents");
-var xml = require("../../lib/xml");
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import assert from "assert";
+import * as stylesReader from "../../lib/docx/styles-reader.js";
+import * as documents from "../../lib/documents.js";
+import * as xml from "../../lib/xml/index.js";
+import {createCommentsReader} from "../../lib/docx/comments-reader.js";
+import {createBodyReader} from "../../lib/docx/body-reader.js";
 function readComment(element) {
     var bodyReader = createBodyReader({styles: stylesReader.defaultStyles});
     var commentsReader = createCommentsReader(bodyReader);
@@ -25,7 +22,6 @@ test('ID and body of comment are read', function() {
     assert.deepEqual(comment.commentId, "1");
 });
 
-
 test('when optional attributes of comment are missing then they are read as null', function() {
     var comment = readComment(xml.element("w:comments", {}, [
         xml.element("w:comment", {"w:id": "1"})
@@ -34,7 +30,6 @@ test('when optional attributes of comment are missing then they are read as null
     assert.strictEqual(comment.authorInitials, null);
 });
 
-
 test('when optional attributes of comment are blank then they are read as null', function() {
     var comment = readComment(xml.element("w:comments", {}, [
         xml.element("w:comment", {"w:id": "1", "w:author": " ", "w:initials": " "})
@@ -42,7 +37,6 @@ test('when optional attributes of comment are blank then they are read as null',
     assert.strictEqual(comment.authorName, null);
     assert.strictEqual(comment.authorInitials, null);
 });
-
 
 test('when optional attributes of comment are not blank then they are read', function() {
     var comment = readComment(xml.element("w:comments", {}, [

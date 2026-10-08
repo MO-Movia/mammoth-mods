@@ -1,9 +1,6 @@
-var assert = require("assert");
-
-var xmlreader = require("../../lib/xml/reader");
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import assert from "assert";
+import * as xmlreader from "../../lib/xml/reader.js";
 test('should read self-closing element', function() {
     return xmlreader.readString("<body/>").then(function(result) {
         assert.deepEqual({type: "element", name: "body", attributes: {}, children: []}, result);

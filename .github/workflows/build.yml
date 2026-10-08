@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
+    # Sonar secrets intentionally not passed — scan and quality-gate steps
+    # are skipped in the shared workflow when SONAR_TOKEN is empty.
     uses: MO-Movia/CI/.github/workflows/build.yml@main
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

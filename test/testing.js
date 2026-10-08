@@ -1,21 +1,18 @@
-var path = require("path");
-var fs = require("fs");
-var promises = require("../lib/promises");
-var _ = require("underscore");
+import path from "path";
+import _ from "underscore";
+import * as fs from "../lib/fs.js";
+import * as promises from "../lib/promises.js";
+import {fileURLToPath} from "url";
 
-exports.testPath = testPath;
-exports.testData = testData;
-exports.createFakeDocxFile = createFakeDocxFile;
-exports.createFakeFiles = createFakeFiles;
-
-
+var __filename = fileURLToPath(import.meta.url);
+var __dirname = path.dirname(__filename);
 function testPath(filename) {
     return path.join(__dirname, "test-data", filename);
 }
 
 function testData(testDataPath) {
     var fullPath = testPath(testDataPath);
-    return promises.nfcall(fs.readFile, fullPath, "utf-8");
+    return fs.readFile(fullPath, "utf-8");
 }
 
 function createFakeDocxFile(files) {
@@ -37,7 +34,7 @@ function createFakeFiles(files) {
 
 function createRead(files) {
     function read(path, encoding) {
-        return promises.when(files[path], function(buffer) {
+        return promises.resolve(files[path], function(buffer) {
             if (_.isString(buffer)) {
                 buffer = new Buffer(buffer);
             }
@@ -45,11 +42,13 @@ function createRead(files) {
             if (!Buffer.isBuffer(buffer)) {
                 return promises.reject(new Error("file was not a buffer"));
             } else if (encoding) {
-                return promises.when(buffer.toString(encoding));
+                return promises.resolve(buffer.toString(encoding));
             } else {
-                return promises.when(buffer.buffer);
+                return promises.resolve(buffer.buffer);
             }
         });
     }
     return read;
 }
+
+export {testPath, testData, createFakeDocxFile, createFakeFiles};

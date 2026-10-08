@@ -1,46 +1,42 @@
-interface Mammoth {
+export interface Mammoth {
     convertToHtml: (input: Input, options?: Options) => Promise<Result>;
-    extractRawText: (input: Input) => Promise<Result>;
-    embedStyleMap: (input: Input, styleMap: string) => Promise<{
-        toArrayBuffer: () => ArrayBuffer,
-        toBuffer: () => Buffer,
-    }>;
-    images: Images;
+    convert: (input: Input, options?: Options) => Promise<Result>;
 }
 
-type Input = NodeJsInput | BrowserInput;
+export type Input = NodeJsInput | BrowserInput;
 
-type NodeJsInput = PathInput | BufferInput;
+export type NodeJsInput = PathInput | BufferInput;
 
-interface PathInput {
+export interface PathInput {
     path: string;
 }
 
-interface BufferInput {
+export interface BufferInput {
     buffer: Buffer;
 }
 
-type BrowserInput = ArrayBufferInput;
+export type BrowserInput = ArrayBufferInput;
 
-interface ArrayBufferInput {
+export interface ArrayBufferInput {
     arrayBuffer: ArrayBuffer;
 }
 
-interface Options {
+export interface Options {
     styleMap?: string | Array<string>;
     includeEmbeddedStyleMap?: boolean;
     includeDefaultStyleMap?: boolean;
     convertImage?: ImageConverter;
     ignoreEmptyParagraphs?: boolean;
     idPrefix?: string;
+    externalFileAccess?: boolean;
     transformDocument?: (element: any) => any;
 }
 
-interface ImageConverter {
+export interface ImageConverter {
     __mammothBrand: "ImageConverter";
 }
 
-interface Image {
+export interface Image {
     contentType: string;
     readAsArrayBuffer: () => Promise<ArrayBuffer>;
     readAsBase64String: () => Promise<string>;
@@ -48,38 +44,42 @@ interface Image {
     read: ImageRead;
 }
 
-interface ImageRead {
+export interface ImageRead {
     (): Promise<Buffer>;
     (encoding: string): Promise<string>;
 }
 
-interface ImageAttributes {
+export interface ImageAttributes {
     src: string;
 }
 
-interface Images {
+export interface Images {
     dataUri: ImageConverter;
     imgElement: (f: (image: Image) => Promise<ImageAttributes>) => ImageConverter;
 }
 
-interface Result {
+export interface Result {
     value: string;
     messages: Array<Message>;
 }
 
-type Message = Warning | Error;
+export type Message = Warning | Error;
 
-interface Warning {
+export interface Warning {
     type: "warning";
     message: string;
 }
 
-interface Error {
+export interface Error {
     type: "error";
     message: string;
     error: unknown;
 }
 
+export declare function convertToHtml(input: Input, options?: Options): Promise<Result>;
+
+export declare function convert(input: Input, options?: Options): Promise<Result>;
+
 declare const mammoth: Mammoth;
 
-export = mammoth;
+export default mammoth;

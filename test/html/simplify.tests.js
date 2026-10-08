@@ -1,11 +1,8 @@
-var assert = require("assert");
-
-var _ = require("underscore");
-
-var test = require("../test")(module);
-var html = require("../../lib/html");
-var htmlPaths = require("../../lib/styles/html-paths");
-
+import test from "../test.js";
+import assert from "assert";
+import _ from "underscore";
+import * as html from "../../lib/html/index.js";
+import * as htmlPaths from "../../lib/styles/html-paths.js";
 var nonFreshElement = html.nonFreshElement;
 var text = html.text;
 
@@ -34,6 +31,13 @@ test("empty children of element are removed", function() {
     assert.deepEqual(
         simplifyNode(nonFreshElement("p", {}, [text("Hello"), text("")])),
         [nonFreshElement("p", {}, [text("Hello")])]
+    );
+});
+
+test("empty void elements are not removed", function() {
+    assert.deepEqual(
+        simplifyNode(nonFreshElement("br", {}, [])),
+        [nonFreshElement("br", {}, [])]
     );
 });
 
