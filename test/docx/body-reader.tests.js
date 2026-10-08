@@ -1533,7 +1533,7 @@ test('emits warning on unrecognized element', function () {
   assert.deepEqual(result.messages, [
     {
       type: 'warning',
-      message: 'An unrecognized element was ignored: w:not-an-element',
+      message: 'An unrecognised element was ignored: w:not-an-element',
     },
   ]);
   assert.deepEqual(result.value, []);

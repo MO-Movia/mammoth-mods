@@ -366,7 +366,7 @@ test("warning is emitted if run style is unrecognized", function () {
   return converter.convertToHtml(run).then(function (result) {
     assert.deepEqual(result.messages, [
       results.warning(
-        "Unrecognized run style: 'Heading 1 Char' (Style ID: Heading1Char)"
+        "Unrecognised run style: 'Heading 1 Char' (Style ID: Heading1Char)"
       ),
     ]);
   });
