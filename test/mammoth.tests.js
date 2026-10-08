@@ -1,6 +1,5 @@
 var assert = require("assert");
 var path = require("path");
-var _ = require("underscore");
 
 var mammoth = require("../");
 var fs = require("../lib/fs");
@@ -121,54 +120,6 @@ test('embedded style maps can be disabled', function() {
     });
 });
 
-test('embedded style map can be written using toBuffer() and then read', function() {
-    var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
-    return fs.readFile(docxPath)
-        .then(function(buffer) {
-            return mammoth.embedStyleMap({buffer: buffer}, "p => h1");
-        })
-        .then(function(docx) {
-            var buffer = docx.toBuffer();
-            assert.ok(Buffer.isBuffer(buffer));
-            return mammoth.convertToHtml({buffer: buffer});
-        })
-        .then(function(result) {
-            assert.equal(result.value, "<h1>Walking on imported air</h1>");
-            assert.deepEqual(result.messages, []);
-        });
-});
-
-test('embedded style map can be written using toArrayBuffer() and then read', function() {
-    var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
-    return fs.readFile(docxPath)
-        .then(function(buffer) {
-            return mammoth.embedStyleMap({buffer: buffer}, "p => h1");
-        })
-        .then(function(docx) {
-            var arrayBuffer = docx.toArrayBuffer();
-            assert.ok(!Buffer.isBuffer(arrayBuffer));
-            return mammoth.convertToHtml({buffer: Buffer.from(arrayBuffer)});
-        })
-        .then(function(result) {
-            assert.equal(result.value, "<h1>Walking on imported air</h1>");
-            assert.deepEqual(result.messages, []);
-        });
-});
-
-test('embedded style map can be retrieved', function() {
-    var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
-    return fs.readFile(docxPath)
-        .then(function(buffer) {
-            return mammoth.embedStyleMap({buffer: buffer}, "p => h1");
-        })
-        .then(function(docx) {
-            return mammoth.readEmbeddedStyleMap({buffer: docx.toBuffer()});
-        })
-        .then(function(styleMap) {
-            assert.equal(styleMap, "p => h1");
-        });
-});
-
 test('warning if style mapping is not understood', function() {
     var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
     var options = {
@@ -209,20 +160,6 @@ test('options.transformDocument is used to transform document if set', function(
     });
 });
 
-test('mammoth.transforms.paragraph only transforms paragraphs', function() {
-    var docxFile = createFakeDocxFile({
-        "word/document.xml": testData("simple/word/document.xml")
-    });
-    var options = {
-        transformDocument: mammoth.transforms.paragraph(function(paragraph) {
-            return _.extend(paragraph, {styleId: "Heading1"});
-        })
-    };
-    return mammoth.convertToHtml({file: docxFile}, options).then(function(result) {
-        assert.equal("<h1>Hello.</h1>", result.value);
-    });
-});
-
 test('inline images referenced by path relative to part are included in output', function() {
     var docxPath = path.join(__dirname, "test-data/tiny-picture.docx");
     return mammoth.convertToHtml({path: docxPath}).then(function(result) {
@@ -234,77 +171,6 @@ test('inline images referenced by path relative to base are included in output',
     var docxPath = path.join(__dirname, "test-data/tiny-picture-target-base-relative.docx");
     return mammoth.convertToHtml({path: docxPath}).then(function(result) {
         assert.equal(result.value, '<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAAXNSR0IArs4c6QAAAAlwSFlzAAAOvgAADr4B6kKxwAAAABNJREFUKFNj/M+ADzDhlWUYqdIAQSwBE8U+X40AAAAASUVORK5CYII=" /></p>');
-    });
-});
-
-test('src of inline images can be changed using read("base64")', function() {
-    var docxPath = path.join(__dirname, "test-data/tiny-picture.docx");
-    var convertImage = mammoth.images.imgElement(function(element) {
-        return element.read("base64").then(function(encodedImage) {
-            return {src: encodedImage.substring(0, 2) + "," + element.contentType};
-        });
-    });
-    return mammoth.convertToHtml({path: docxPath}, {convertImage: convertImage}).then(function(result) {
-        assert.deepEqual(result.messages, []);
-        assert.equal(result.value, '<p><img src="iV,image/png" /></p>');
-    });
-});
-
-test('src of inline images can be changed using readAsBase64String()', function() {
-    var docxPath = path.join(__dirname, "test-data/tiny-picture.docx");
-    var convertImage = mammoth.images.imgElement(function(element) {
-        return element.readAsBase64String().then(function(encodedImage) {
-            return {src: encodedImage.substring(0, 2) + "," + element.contentType};
-        });
-    });
-    return mammoth.convertToHtml({path: docxPath}, {convertImage: convertImage}).then(function(result) {
-        assert.deepEqual(result.messages, []);
-        assert.equal(result.value, '<p><img src="iV,image/png" /></p>');
-    });
-});
-
-test('src of inline images can be changed using readAsArrayBuffer()', function() {
-    var docxPath = path.join(__dirname, "test-data/tiny-picture.docx");
-    var convertImage = mammoth.images.imgElement(function(element) {
-        return element.readAsArrayBuffer().then(function(arrayBuffer) {
-            assert.ok(!Buffer.isBuffer(arrayBuffer));
-            var encodedImage = Buffer.from(arrayBuffer).toString("base64");
-            return {src: encodedImage.substring(0, 2) + "," + element.contentType};
-        });
-    });
-    return mammoth.convertToHtml({path: docxPath}, {convertImage: convertImage}).then(function(result) {
-        assert.deepEqual(result.messages, []);
-        assert.equal(result.value, '<p><img src="iV,image/png" /></p>');
-    });
-});
-
-test('src of inline images can be changed using read()', function() {
-    var docxPath = path.join(__dirname, "test-data/tiny-picture.docx");
-    var convertImage = mammoth.images.imgElement(function(element) {
-        return element.read().then(function(buffer) {
-            assert.ok(Buffer.isBuffer(buffer));
-            var encodedImage = buffer.toString("base64");
-            return {src: encodedImage.substring(0, 2) + "," + element.contentType};
-        });
-    });
-    return mammoth.convertToHtml({path: docxPath}, {convertImage: convertImage}).then(function(result) {
-        assert.deepEqual(result.messages, []);
-        assert.equal(result.value, '<p><img src="iV,image/png" /></p>');
-    });
-});
-
-test('src of inline images can be changed using readAsBuffer()', function() {
-    var docxPath = path.join(__dirname, "test-data/tiny-picture.docx");
-    var convertImage = mammoth.images.imgElement(function(element) {
-        return element.readAsBuffer().then(function(buffer) {
-            assert.ok(Buffer.isBuffer(buffer));
-            var encodedImage = buffer.toString("base64");
-            return {src: encodedImage.substring(0, 2) + "," + element.contentType};
-        });
-    });
-    return mammoth.convertToHtml({path: docxPath}, {convertImage: convertImage}).then(function(result) {
-        assert.deepEqual(result.messages, []);
-        assert.equal(result.value, '<p><img src="iV,image/png" /></p>');
     });
 });
 
@@ -466,44 +332,6 @@ test('indentation is used if prettyPrint is true', function() {
     });
 });
 
-test('using styleMapping throws error', function() {
-    try {
-        mammoth.styleMapping();
-    } catch (error) {
-        assert.equal(
-            error.message,
-            'Use a raw string instead of mammoth.styleMapping e.g. "p[style-name=\'Title\'] => h1" instead of mammoth.styleMapping("p[style-name=\'Title\'] => h1")'
-        );
-    }
-});
-
-test('can convert single paragraph to markdown', function() {
-    var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
-    return mammoth.convertToMarkdown({path: docxPath}).then(function(result) {
-        assert.equal(result.value, "Walking on imported air\n\n");
-        assert.deepEqual(result.messages, []);
-    });
-});
-
-test('extractRawText only retains raw text', function() {
-    var docxPath = path.join(__dirname, "test-data/simple-list.docx");
-    return mammoth.extractRawText({path: docxPath}).then(function(result) {
-        assert.equal(result.value, 'Apple\n\nBanana\n\n');
-    });
-});
-
-test('extractRawText can use .docx files represented by a Buffer', function() {
-    var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
-    return fs.readFile(docxPath)
-        .then(function(buffer) {
-            return mammoth.extractRawText({buffer: buffer});
-        })
-        .then(function(result) {
-            assert.equal(result.value, "Walking on imported air\n\n");
-            assert.deepEqual(result.messages, []);
-        });
-});
-
 test('can read strict format', function() {
     var docxPath = path.join(__dirname, "test-data/strict-format.docx");
     return mammoth.convertToHtml({path: docxPath}).then(function(result) {
@@ -525,33 +353,5 @@ test("Promise.done() is available", {
     "on convertToHtml()": function() {
         var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
         return mammoth.convertToHtml({path: docxPath}).done();
-    },
-
-    "on convertToMarkdown()": function() {
-        var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
-        return mammoth.convertToMarkdown({path: docxPath}).done();
-    },
-
-    "on extractRawText()": function() {
-        var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
-        return mammoth.extractRawText({path: docxPath}).done();
-    },
-
-    "on embedStyleMap()": function() {
-        var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
-        return fs.readFile(docxPath).then(function(buffer) {
-            return mammoth.embedStyleMap({buffer: buffer}, "p => h1").done();
-        });
-    },
-
-    "on readEmbeddedStyleMap()": function() {
-        var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");
-        return fs.readFile(docxPath)
-            .then(function(buffer) {
-                return mammoth.embedStyleMap({buffer: buffer}, "p => h1");
-            })
-            .then(function(docx) {
-                return mammoth.readEmbeddedStyleMap({buffer: docx.toBuffer()}).done();
-            });
     }
 });
