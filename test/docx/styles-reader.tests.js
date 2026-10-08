@@ -110,6 +110,28 @@ test('numbering style has numId read from paragraph properties', function() {
     assert.equal(styles.findNumberingStyleById("List1").numId, "42");
 });
 
+test('when multiple style elements have same style ID then only first element is used', function() {
+    var styles = readStylesXml(
+        new XmlElement("w:styles", {}, [
+            tableStyleElement("TableNormal", "Normal Table"),
+            tableStyleElement("TableNormal", "Table Normal")
+        ])
+    );
+    assert.equal(styles.findTableStyleById("TableNormal").name, "Normal Table");
+});
+
+test('w:type of __proto__ does not cause prototype pollution', function() {
+    readStylesXml(
+        new XmlElement("w:styles", {}, [
+            new XmlElement("w:style", {"w:type": "__proto__", "w:styleId": "List1"}, [
+                new XmlElement("w:name", {"w:val": "List 1"}, [])
+            ])
+        ])
+    );
+
+    assert.equal({}["List1"], undefined);
+});
+
 function paragraphStyleElement(id, name) {
     return styleElement("paragraph", id, name);
 }
