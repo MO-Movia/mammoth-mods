@@ -1,8 +1,6 @@
-var assert = require("assert");
-
-var promises = require("../lib/promises");
-var test = require("./test")(module);
-
+import test from "./test.js";
+import assert from "assert";
+import * as promises from "../lib/promises.js";
 test("forEachSeries", {
     "empty array resolves immediately without calling function": function() {
         return promises.forEachSeries([], function() {

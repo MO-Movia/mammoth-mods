@@ -1,12 +1,9 @@
-var assert = require("assert");
-
-var _ = require("underscore");
-
-var optionsReader = require("../lib/options-reader");
+import test from "./test.js";
+import assert from "assert";
+import _ from "underscore";
+import * as optionsReader from "../lib/options-reader.js";
 var standardOptions = optionsReader._standardOptions;
 var readOptions = optionsReader.readOptions;
-var test = require("./test")(module);
-
 
 test('standard options are used if options is undefined', function() {
     var options = readOptions(undefined);

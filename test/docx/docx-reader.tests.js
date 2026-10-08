@@ -1,14 +1,11 @@
-var assert = require("assert");
-
-var docxReader = require("../../lib/docx/docx-reader");
-var documents = require("../../lib/documents");
-var xml = require("../../lib/xml");
-
-var testing = require("../testing");
-var test = require("../test")(module);
+import test from "../test.js";
+import assert from "assert";
+import * as docxReader from "../../lib/docx/docx-reader.js";
+import * as documents from "../../lib/documents.js";
+import * as xml from "../../lib/xml/index.js";
+import * as testing from "../testing.js";
 var testData = testing.testData;
 var createFakeDocxFile = testing.createFakeDocxFile;
-
 
 test("can read document with single paragraph with single run of text", function() {
     var expectedDocument = documents.Document([
@@ -68,7 +65,6 @@ test("main document is found using _rels/.rels", function() {
     });
 });
 
-
 test("error is thrown when main document part does not exist", function() {
     var relationships = xml.element("r:Relationships", {}, [
         xml.element("r:Relationship", {
@@ -86,7 +82,6 @@ test("error is thrown when main document part does not exist", function() {
         assert.equal(error.message, "Could not find main document part. Are you sure this is a valid .docx file?");
     });
 });
-
 
 test("part paths", {
     "main document part is found using package relationships": function() {
@@ -167,7 +162,6 @@ test("part paths", {
         });
     });
 });
-
 
 function createPackageRelationships(mainDocumentPath) {
     return xml.writeString(xml.element("r:Relationships", {}, [

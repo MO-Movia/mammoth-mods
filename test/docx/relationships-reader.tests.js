@@ -1,10 +1,7 @@
-var assert = require("assert");
-
-var readRelationships = require("../../lib/docx/relationships-reader").readRelationships;
-var xml = require("../../lib/xml");
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import assert from "assert";
+import * as xml from "../../lib/xml/index.js";
+import {readRelationships} from "../../lib/docx/relationships-reader.js";
 test("relationships can be found by ID", function() {
     var relationships = readRelationships(relationshipsElement([
         relationshipElement({
@@ -20,7 +17,6 @@ test("relationships can be found by ID", function() {
     ]));
     assert.equal(relationships.findTargetByRelationshipId("rId1"), "http://example.com/");
 });
-
 
 test("relationships can be found by type", function() {
     var relationships = readRelationships(relationshipsElement([
@@ -46,7 +42,6 @@ test("relationships can be found by type", function() {
     );
 });
 
-
 test("when there are no relationships of requested type then empty array is returned", function() {
     var relationships = readRelationships(relationshipsElement([]));
     assert.deepEqual(
@@ -54,7 +49,6 @@ test("when there are no relationships of requested type then empty array is retu
         []
     );
 });
-
 
 function relationshipsElement(children) {
     return xml.element("relationships:Relationships", {}, children);

@@ -1,11 +1,9 @@
-var assert = require("assert");
-
-var documents = require("../../lib/documents");
-var DocumentXmlReader = require("../../lib/docx/document-xml-reader").DocumentXmlReader;
-var xml = require("../../lib/xml");
-var test = require("../test")(module);
-var createBodyReaderForTests = require("./testing").createBodyReaderForTests;
-
+import test from "../test.js";
+import assert from "assert";
+import * as documents from "../../lib/documents.js";
+import * as xml from "../../lib/xml/index.js";
+import {DocumentXmlReader} from "../../lib/docx/document-xml-reader.js";
+import {createBodyReaderForTests} from "./testing.js";
 test("when body element is present then body is read", function() {
     var bodyReader = createBodyReaderForTests({});
     var documentXmlReader = new DocumentXmlReader({

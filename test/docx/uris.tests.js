@@ -1,9 +1,6 @@
-var assert = require("assert");
-
-var zipfile = require("../../lib/docx/uris");
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import assert from "assert";
+import * as zipfile from "../../lib/docx/uris.js";
 test("uriToZipEntryName", {
     "when path does not have leading slash then path is resolved relative to base": function() {
         assert.equal(
@@ -19,4 +16,3 @@ test("uriToZipEntryName", {
         );
     }
 });
-

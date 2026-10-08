@@ -1,11 +1,9 @@
-var hamjest = require("hamjest");
+import test from "../../test.js";
+import hamjest from "hamjest";
+import {tokenise} from "../../../lib/styles/parser/tokeniser.js";
 var assertThat = hamjest.assertThat;
 var contains = hamjest.contains;
 var hasProperties = hamjest.hasProperties;
-
-var tokenise = require("../../../lib/styles/parser/tokeniser").tokenise;
-var test = require("../../test")(module);
-
 
 test("unknown tokens are tokenised", function() {
     assertTokens("~", [isToken("unrecognisedCharacter", "~")]);

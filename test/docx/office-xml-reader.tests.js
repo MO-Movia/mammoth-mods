@@ -1,10 +1,7 @@
-var assert = require("assert");
-
-var xml = require("../../lib/xml");
-var officeXmlReader = require("../../lib/docx/office-xml-reader");
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import assert from "assert";
+import * as xml from "../../lib/xml/index.js";
+import * as officeXmlReader from "../../lib/docx/office-xml-reader.js";
 test("mc:AlternateContent", {
     "when mc:Fallback is present then mc:Fallback is read": function() {
         var xmlString =

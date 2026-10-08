@@ -1,11 +1,8 @@
-var assert = require("assert");
-
-var JSZip = require("jszip");
-
-var zipfile = require("../../lib/zipfile");
-var styleMap = require("../../lib/docx/style-map");
-var test = require("../test")(module);
-
+import test from "../test.js";
+import assert from "assert";
+import JSZip from "jszip";
+import * as zipfile from "../../lib/zipfile.js";
+import * as styleMap from "../../lib/docx/style-map.js";
 test('reading embedded style map on document without embedded style map returns null', function() {
     return normalDocx().then(function(zip) {
         return styleMap.readStyleMap(zip).then(function(contents) {

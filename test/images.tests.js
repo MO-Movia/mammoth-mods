@@ -1,22 +1,17 @@
-var assert = require("assert");
-
-var hamjest = require("hamjest");
+import test from "./test.js";
+import assert from "assert";
+import hamjest from "hamjest";
+import * as images from "../lib/images.js";
+import * as documents from "../lib/documents.js";
+import * as promises from "../lib/promises.js";
 var assertThat = hamjest.assertThat;
 var contains = hamjest.contains;
 var equalTo = hamjest.equalTo;
 var hasProperties = hamjest.hasProperties;
 
-var images = require("../lib/images");
-var documents = require("../lib/documents");
-var promises = require("../lib/promises");
-
-var test = require("./test")(module);
-
-
 test('images.inline() should be an alias of images.imgElement()', function() {
     assert.ok(images.inline === images.imgElement);
 });
-
 
 test('images.dataUri() encodes images in base64', function() {
     var imageBuffer = new Buffer("abc");
@@ -33,7 +28,6 @@ test('images.dataUri() encodes images in base64', function() {
         ));
     });
 });
-
 
 test('images.imgElement()', {
     'when element does not have alt text then alt attribute is not set': function() {

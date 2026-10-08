@@ -1,10 +1,7 @@
-var assert = require("assert");
-
-var readStylesXml = require("../../lib/docx/styles-reader").readStylesXml;
-var XmlElement = require("../../lib/xml").Element;
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import assert from "assert";
+import {readStylesXml} from "../../lib/docx/styles-reader.js";
+import {Element as XmlElement} from "../../lib/xml/index.js";
 test('paragraph style is null if no style with that ID exists', function() {
     var styles = readStylesXml(
         new XmlElement("w:styles", {}, [])

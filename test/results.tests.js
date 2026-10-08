@@ -1,9 +1,7 @@
-var assert = require("assert");
-
-var results = require("../lib/results");
+import test from "./test.js";
+import assert from "assert";
+import * as results from "../lib/results.js";
 var Result = results.Result;
-var test = require("./test")(module);
-
 
 test("Result.combine removes any duplicate messages", function() {
     var first = new Result(null, [results.warning("Warning...")]);

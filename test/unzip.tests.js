@@ -1,10 +1,12 @@
-var assert = require("assert");
-var path = require("path");
+import test from "./test.js";
+import assert from "assert";
+import path from "path";
+import * as fs from "../lib/fs.js";
+import * as unzip from "../lib/unzip.js";
+import {fileURLToPath} from "url";
 
-var test = require("./test")(module);
-var fs = require("../lib/fs");
-var unzip = require("../lib/unzip");
-
+var __filename = fileURLToPath(import.meta.url);
+var __dirname = path.dirname(__filename);
 test("unzip fails if given empty object", function() {
     return unzip.openZip({}).then(function() {
         assert.ok(false, "Expected failure");

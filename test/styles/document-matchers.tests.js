@@ -1,8 +1,7 @@
-var assert = require("assert");
-
-var test = require("../test")(module);
-var documentMatchers = require("../../lib/styles/document-matchers");
-var documents = require("../../lib/documents");
+import test from "../test.js";
+import assert from "assert";
+import * as documentMatchers from "../../lib/styles/document-matchers.js";
+import * as documents from "../../lib/documents.js";
 var Paragraph = documents.Paragraph;
 
 test("paragraph with no options matches any paragraph", function() {
@@ -68,7 +67,6 @@ test("highlight matcher with color does not match highlights with other colors",
 function paragraphWithStyle(styleId, styleName) {
     return new Paragraph([], {styleId: styleId, styleName: styleName});
 }
-
 
 test("equalTo matcher is case insensitive", function() {
     var matcher = documentMatchers.equalTo("Heading 1");

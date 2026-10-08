@@ -1,9 +1,6 @@
-var assert = require("assert");
-var test = require("../test")(module);
-
-var htmlWriter = require("../../lib/writers/html-writer");
-
-
+import test from "../test.js";
+import assert from "assert";
+import * as htmlWriter from "../../lib/writers/html-writer.js";
 test('can generate simple paragraph', function() {
     var writer = htmlWriter.writer();
     writer.open("p");

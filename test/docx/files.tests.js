@@ -1,14 +1,10 @@
-var path = require("path");
-var assert = require("assert");
-
-var Files = require("../../lib/docx/files").Files;
-var uriToPath = require("../../lib/docx/files").uriToPath;
-var fs = require("../../lib/fs");
-
-var testing = require("../testing");
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import path from "path";
+import assert from "assert";
+import * as fs from "../../lib/fs.js";
+import * as testing from "../testing.js";
+import {Files} from "../../lib/docx/files.js";
+import {uriToPath} from "../../lib/docx/files.js";
 test("Files", {
     "when external file access is disabled then reading file raises error": function() {
         var files = new Files({externalFileAccess: false});
@@ -67,7 +63,6 @@ function assertError(promise, func) {
 function assertRegex(actual, expected) {
     assert.ok(expected.test(actual), "Expected regex: " + expected + "\nbut was: " + actual);
 }
-
 
 test("uriToPath", {
     "leading slash is retained on non-Windows file URIs": function() {

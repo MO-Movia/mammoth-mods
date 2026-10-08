@@ -1,8 +1,17 @@
-var assert = require("assert");
-var path = require("path");
-
-var _ = require("underscore");
-var hamjest = require("hamjest");
+import test from "../test.js";
+import assert from "assert";
+import path from "path";
+import _ from "underscore";
+import hamjest from "hamjest";
+import * as documentMatchers from "./document-matchers.js";
+import * as documents from "../../lib/documents.js";
+import * as xml from "../../lib/xml/index.js";
+import * as testing from "../testing.js";
+import {_readNumberingProperties} from "../../lib/docx/body-reader.js";
+import {Relationships} from "../../lib/docx/relationships-reader.js";
+import {Styles} from "../../lib/docx/styles-reader.js";
+import {warning} from "../../lib/results.js";
+import {createBodyReaderForTests} from "./testing.js";
 var assertThat = hamjest.assertThat;
 var promiseThat = hamjest.promiseThat;
 var allOf = hamjest.allOf;
@@ -12,7 +21,6 @@ var hasProperties = hamjest.hasProperties;
 var willBe = hamjest.willBe;
 var FeatureMatcher = hamjest.FeatureMatcher;
 
-var documentMatchers = require("./document-matchers");
 var isEmptyRun = documentMatchers.isEmptyRun;
 var isCheckbox = documentMatchers.isCheckbox;
 var isHyperlink = documentMatchers.isHyperlink;
@@ -21,17 +29,8 @@ var isText = documentMatchers.isText;
 var isTable = documentMatchers.isTable;
 var isRow = documentMatchers.isRow;
 
-var _readNumberingProperties = require("../../lib/docx/body-reader")._readNumberingProperties;
-var documents = require("../../lib/documents");
-var xml = require("../../lib/xml");
 var XmlElement = xml.Element;
-var Relationships = require("../../lib/docx/relationships-reader").Relationships;
-var Styles = require("../../lib/docx/styles-reader").Styles;
-var warning = require("../../lib/results").warning;
 
-var testing = require("../testing");
-var test = require("../test")(module);
-var createBodyReaderForTests = require("./testing").createBodyReaderForTests;
 var createFakeDocxFile = testing.createFakeDocxFile;
 
 function readXmlElement(element, options) {
@@ -519,7 +518,7 @@ test("complex fields", (function() {
                     )
                 }),
                 isEmptyRun
-          ));
+            ));
         },
 
         "complex field nested within a hyperlink complex field is wrapped with the hyperlink": function() {
@@ -552,7 +551,7 @@ test("complex fields", (function() {
                 }),
                 isEmptyHyperlinkedRun,
                 isEmptyRun
-          ));
+            ));
         },
 
         "field without separate w:fldChar is ignored": function() {

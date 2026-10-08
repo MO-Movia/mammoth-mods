@@ -1,15 +1,12 @@
-var assert = require("assert");
-var htmlPaths = require("../lib/styles/html-paths");
-var documentMatchers = require("../lib/styles/document-matchers");
-var styleReader = require("../lib/style-reader");
-var results = require("../lib/results");
-var test = require("./test")(module);
-
-
+import test from "./test.js";
+import assert from "assert";
+import * as htmlPaths from "../lib/styles/html-paths.js";
+import * as documentMatchers from "../lib/styles/document-matchers.js";
+import * as styleReader from "../lib/style-reader.js";
+import * as results from "../lib/results.js";
 var readHtmlPath = styleReader.readHtmlPath;
 var readDocumentMatcher = styleReader.readDocumentMatcher;
 var readStyle = styleReader.readStyle;
-
 
 test('styleReader.readHtmlPath', {
     'reads empty path': function() {
@@ -84,7 +81,7 @@ test('styleReader.readHtmlPath', {
 
     'reads separator with escape sequence': function() {
         var expected = htmlPaths.elements([
-            htmlPaths.element("p", {}, {separator: "\r\n\t\'\\"})
+            htmlPaths.element("p", {}, {separator: "\r\n\t'\\"})
         ]);
         assertHtmlPath("p:separator('\\r\\n\\t\\'\\\\')", expected);
     },

@@ -9,7 +9,17 @@
     "office",
     "word"
   ],
+  "type": "module",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./lib/*": "./lib/*.js",
+    "./package.json": "./package.json"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/MO-Movia/mammoth-mods.git"
@@ -25,9 +35,9 @@
   },
   "devDependencies": {
     "@types/node": "^20.2.5",
-    "eslint": "2.13.1",
+    "eslint": "^8.57.1",
     "hamjest": "^4.0.1",
-    "mocha": "~2.2.5",
+    "mocha": "^12.0.3",
     "typescript": "^5.0.4"
   },
   "browser": {
@@ -42,7 +52,7 @@
   },
   "license": "BSD-2-Clause",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=14.0.0"
   },
   "volta": {
     "node": "26.8.2"

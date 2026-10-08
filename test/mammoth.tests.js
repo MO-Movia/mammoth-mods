@@ -1,15 +1,16 @@
-var assert = require("assert");
-var path = require("path");
+import test from "./test.js";
+import assert from "assert";
+import path from "path";
+import * as mammoth from "../lib/index.js";
+import * as fs from "../lib/fs.js";
+import * as results from "../lib/results.js";
+import * as testing from "./testing.js";
+import {fileURLToPath} from "url";
 
-var mammoth = require("../");
-var fs = require("../lib/fs");
-var results = require("../lib/results");
-
-var testing = require("./testing");
-var test = require("./test")(module);
+var __filename = fileURLToPath(import.meta.url);
+var __dirname = path.dirname(__filename);
 var testData = testing.testData;
 var createFakeDocxFile = testing.createFakeDocxFile;
-
 
 test('should convert docx containing one paragraph to single p element', function() {
     var docxPath = path.join(__dirname, "test-data/single-paragraph.docx");

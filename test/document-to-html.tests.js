@@ -1,17 +1,15 @@
-var assert = require("assert");
-var promises = require("../lib/promises");
-
-var documents = require("../lib/documents");
-var documentToHtml = require("../lib/document-to-html");
+import test from "./test.js";
+import assert from "assert";
+import * as promises from "../lib/promises.js";
+import * as documents from "../lib/documents.js";
+import * as documentToHtml from "../lib/document-to-html.js";
+import * as htmlPaths from "../lib/styles/html-paths.js";
+import * as xml from "../lib/xml/index.js";
+import * as results from "../lib/results.js";
+import * as documentMatchers from "../lib/styles/document-matchers.js";
+import * as Html from "../lib/html/index.js";
 var DocumentConverter = documentToHtml.DocumentConverter;
 var commentAuthorLabel = documentToHtml.commentAuthorLabel;
-var test = require("./test")(module);
-var htmlPaths = require("../lib/styles/html-paths");
-var xml = require("../lib/xml");
-var results = require("../lib/results");
-var documentMatchers = require("../lib/styles/document-matchers");
-var Html = require("../lib/html");
-
 
 test('should empty document to empty string', function() {
     var document = new documents.Document([]);
@@ -319,7 +317,6 @@ test('all caps runs can be configured with style mapping', function() {
     });
 });
 
-
 test('small caps runs are ignored by default', function() {
     var run = runOfText("Hello.", {isSmallCaps: true});
     var converter = new DocumentConverter();
@@ -342,7 +339,6 @@ test('small caps runs can be configured with style mapping', function() {
         assert.equal(result.value, "<span>Hello.</span>");
     });
 });
-
 
 test('highlighted runs are ignored by default', function() {
     var run = runOfText("Hello.", {highlight: "yellow"});
@@ -388,7 +384,6 @@ test('highlighted runs can be configured with style mapping for specific highlig
         assert.equal(result.value, '<p><mark class="yellow">Yellow</mark><mark>Red</mark></p>');
     });
 });
-
 
 test('run styles are converted to HTML if mapping exists', function() {
     var run = runOfText("Hello.", {styleId: "Heading1Char", styleName: "Heading 1 Char"});

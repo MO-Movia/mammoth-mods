@@ -1,12 +1,8 @@
-var assert = require("assert");
-
-var _ = require("underscore");
-
-var documents = require("../lib/documents");
-var transforms = require("../lib/transforms");
-var test = require("./test")(module);
-
-
+import test from "./test.js";
+import assert from "assert";
+import _ from "underscore";
+import * as documents from "../lib/documents.js";
+import * as transforms from "../lib/transforms.js";
 test("paragraph()", {
     "paragraph is transformed": function() {
         var paragraph = documents.paragraph([]);
@@ -25,7 +21,6 @@ test("paragraph()", {
     }
 });
 
-
 test("run()", {
     "run is transformed": function() {
         var run = documents.run([]);
@@ -43,7 +38,6 @@ test("run()", {
         assert.deepEqual(result, documents.paragraph([]));
     }
 });
-
 
 test("elements()", {
     "all descendants are transformed": function() {
@@ -78,7 +72,6 @@ test("elements()", {
     }
 });
 
-
 test("getDescendants()", {
     "returns nothing if element has no children property": function() {
         assert.deepEqual(transforms.getDescendants({}), []);
@@ -108,7 +101,6 @@ test("getDescendants()", {
         );
     }
 });
-
 
 test("getDescendantsOfType()", {
     "filters descendants to type": function() {

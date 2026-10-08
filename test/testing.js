@@ -1,15 +1,11 @@
-var path = require("path");
-var _ = require("underscore");
+import path from "path";
+import _ from "underscore";
+import * as fs from "../lib/fs.js";
+import * as promises from "../lib/promises.js";
+import {fileURLToPath} from "url";
 
-var fs = require("../lib/fs");
-var promises = require("../lib/promises");
-
-exports.testPath = testPath;
-exports.testData = testData;
-exports.createFakeDocxFile = createFakeDocxFile;
-exports.createFakeFiles = createFakeFiles;
-
-
+var __filename = fileURLToPath(import.meta.url);
+var __dirname = path.dirname(__filename);
 function testPath(filename) {
     return path.join(__dirname, "test-data", filename);
 }
@@ -54,3 +50,5 @@ function createRead(files) {
     }
     return read;
 }
+
+export {testPath, testData, createFakeDocxFile, createFakeFiles};

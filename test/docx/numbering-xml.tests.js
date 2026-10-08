@@ -1,12 +1,9 @@
-var assert = require("assert");
-var duck = require("duck");
-
-var readNumberingXml = require("../../lib/docx/numbering-xml").readNumberingXml;
-var stylesReader = require("../../lib/docx/styles-reader");
-var XmlElement = require("../../lib/xml").Element;
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import assert from "assert";
+import duck from "duck";
+import * as stylesReader from "../../lib/docx/styles-reader.js";
+import {readNumberingXml} from "../../lib/docx/numbering-xml.js";
+import {Element as XmlElement} from "../../lib/xml/index.js";
 test('w:num element inherits levels from w:abstractNum', function() {
     var numbering = readNumberingXml(
         new XmlElement("w:numbering", {}, [
@@ -31,7 +28,6 @@ test('w:num element inherits levels from w:abstractNum', function() {
         isOrdered: true
     }));
 });
-
 
 test('w:num element referencing non-existent w:abstractNumId is ignored', function() {
     var numbering = readNumberingXml(
@@ -125,7 +121,6 @@ test('when level is missing w:numFmt then level is ordered', function() {
     }));
 });
 
-
 test('when w:abstractNum has w:numStyleLink then style is used to find w:num', function() {
     var numbering = readNumberingXml(
         new XmlElement("w:numbering", {}, [
@@ -151,7 +146,6 @@ test('when w:abstractNum has w:numStyleLink then style is used to find w:num', f
     }));
 });
 
-
 test('when w:abstractNum has self-recursive w:numStyleLink then level is not found', function() {
     var numbering = readNumberingXml(
         new XmlElement("w:numbering", {}, [
@@ -166,7 +160,6 @@ test('when w:abstractNum has self-recursive w:numStyleLink then level is not fou
     );
     duck.assertThat(numbering.findLevel("200", "0"), duck.equalTo(null));
 });
-
 
 // See: 17.9.23 pStyle (Paragraph Style's Associated Numbering Level) in ECMA-376, 4th Edition
 test('numbering level can be found by paragraph style ID', function() {
