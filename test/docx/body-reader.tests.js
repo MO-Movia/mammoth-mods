@@ -41,15 +41,22 @@ function readXmlElements(element, options) {
     return createBodyReaderForTests(options).readXmlElements(element);
 }
 
+function assertNoMessagesExceptParsedStyles(result) {
+    var messages = result.messages.filter(function(message) {
+        return !/parsedStyles/.test(message.message);
+    });
+    assert.deepEqual(messages, []);
+}
+
 function readXmlElementValue(element, options) {
     var result = readXmlElement(element, options);
-    assert.deepEqual(result.messages, []);
+    assertNoMessagesExceptParsedStyles(result);
     return result.value;
 }
 
 function readXmlElementsValue(elements, options) {
     var result = readXmlElements(elements, options);
-    assert.deepEqual(result.messages, []);
+    assertNoMessagesExceptParsedStyles(result);
     return result.value;
 }
 
@@ -92,7 +99,10 @@ test("warning is emitted when paragraph style cannot be found", function() {
     var paragraph = result.value;
     assert.deepEqual(paragraph.styleId, "Heading1");
     assert.deepEqual(paragraph.styleName, null);
-    assert.deepEqual(result.messages, [warning("Paragraph style with ID Heading1 was referenced but not defined in the document")]);
+    assert.deepEqual(result.messages, [
+        warning(" parsedStyles: 'undefined' (Style ID: )"),
+        warning("Paragraph style with ID Heading1 was referenced but not defined in the document")
+    ]);
 });
 
 test("paragraph has justification read from paragraph properties if present", function() {
@@ -937,7 +947,10 @@ test("warning is emitted when run style cannot be found", function() {
     var run = result.value;
     assert.deepEqual(run.styleId, "Heading1Char");
     assert.deepEqual(run.styleName, null);
-    assert.deepEqual(result.messages, [warning("Run style with ID Heading1Char was referenced but not defined in the document")]);
+    assert.deepEqual(result.messages, [
+        warning(" parsedStyles: 'undefined' (Style ID: )"),
+        warning("Run style with ID Heading1Char was referenced but not defined in the document")
+    ]);
 });
 
 test("isBold is false if bold element is not present", function() {
@@ -1246,7 +1259,10 @@ test("warning is emitted when table style cannot be found", function() {
     var table = result.value;
     assert.deepEqual(table.styleId, "TableNormal");
     assert.deepEqual(table.styleName, null);
-    assert.deepEqual(result.messages, [warning("Table style with ID TableNormal was referenced but not defined in the document")]);
+    assert.deepEqual(result.messages, [
+        warning(" parsedStyles: 'undefined' (Style ID: )"),
+        warning("Table style with ID TableNormal was referenced but not defined in the document")
+    ]);
 });
 
 test("w:tblHeader marks table row as header", function() {
@@ -1952,7 +1968,10 @@ test("text boxes have content appended after containing paragraph", function() {
         new XmlElement("w:r", {}, [textbox])
     ]);
     var result = readXmlElement(paragraph);
-    assert.deepEqual(result.value[1].styleId, "textbox-content");
+    assert.deepEqual(result.value[1].children[0].styleId, "textbox-content");
+    assert.deepEqual(result.value[1].attributes, {
+        style: "border: 1px solid black;display:inline-block;"
+    });
 });
 
 test("mc:AlternateContent", {

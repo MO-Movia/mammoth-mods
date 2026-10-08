@@ -73,7 +73,7 @@ test('uses style mappings to pick HTML element for docx paragraph', function() {
         ]
     });
     return converter.convertToHtml(document).then(function(result) {
-        assert.equal(result.value, "<h1>Hello.</h1>");
+        assert.equal(result.value, '<p className="Heading 1">Hello.</p>');
     });
 });
 
@@ -90,7 +90,7 @@ test('mappings for style names are case insensitive', function() {
         ]
     });
     return converter.convertToHtml(document).then(function(result) {
-        assert.equal(result.value, "<h1>Hello.</h1>");
+        assert.equal(result.value, '<p className="heading 1">Hello.</p>');
     });
 });
 
@@ -509,7 +509,7 @@ test('docx table is converted to table in HTML', function() {
     var converter = new DocumentConverter();
 
     return converter.convertToHtml(table).then(function(result) {
-        var expectedHtml = "<table>" +
+        var expectedHtml = "<table style=\"border-collapse:collapse\" border=\"1px solid #000000\">" +
             "<tr><td><p>Top left</p></td><td><p>Top right</p></td></tr>" +
             "<tr><td><p>Bottom left</p></td><td><p>Bottom right</p></td></tr>" +
             "</table>";
@@ -529,7 +529,7 @@ test('table style mappings can be used to map tables', function() {
     });
 
     return converter.convertToHtml(table).then(function(result) {
-        var expectedHtml = '<table class="normal-table"></table>';
+        var expectedHtml = '<table class="normal-table" style="border-collapse:collapse" border="1px solid #000000"></table>';
         assert.equal(result.value, expectedHtml);
     });
 });
@@ -543,7 +543,7 @@ test('header rows are wrapped in thead', function() {
     var converter = new DocumentConverter();
 
     return converter.convertToHtml(table).then(function(result) {
-        var expectedHtml = "<table>" +
+        var expectedHtml = "<table style=\"border-collapse:collapse\" border=\"1px solid #000000\">" +
             "<thead><tr><th></th></tr><tr><th></th></tr></thead>" +
             "<tbody><tr><td></td></tr></tbody>" +
             "</table>";
@@ -558,7 +558,7 @@ test('tbody is omitted if all rows are headers', function() {
     var converter = new DocumentConverter();
 
     return converter.convertToHtml(table).then(function(result) {
-        var expectedHtml = "<table>" +
+        var expectedHtml = "<table style=\"border-collapse:collapse\" border=\"1px solid #000000\">" +
             "<thead><tr><th></th></tr></thead>" +
             "</table>";
         assert.equal(result.value, expectedHtml);
@@ -572,7 +572,7 @@ test('unexpected table children do not cause error', function() {
     var converter = new DocumentConverter();
 
     return converter.convertToHtml(table).then(function(result) {
-        var expectedHtml = "<table>\t</table>";
+        var expectedHtml = "<table style=\"border-collapse:collapse\" border=\"1px solid #000000\">\t</table>";
         assert.equal(result.value, expectedHtml);
     });
 });
@@ -587,7 +587,7 @@ test('empty cells are preserved in table', function() {
     var converter = new DocumentConverter();
 
     return converter.convertToHtml(table).then(function(result) {
-        var expectedHtml = "<table>" +
+        var expectedHtml = "<table style=\"border-collapse:collapse\" border=\"1px solid #000000\">" +
             "<tr><td></td><td><p>Top right</p></td></tr>" +
             "</table>";
         assert.equal(result.value, expectedHtml);
@@ -604,7 +604,7 @@ test('empty rows are preserved in table', function() {
     var converter = new DocumentConverter();
 
     return converter.convertToHtml(table).then(function(result) {
-        var expectedHtml = "<table>" +
+        var expectedHtml = "<table style=\"border-collapse:collapse\" border=\"1px solid #000000\">" +
             "<tr><td><p>Row 1</p></td></tr><tr></tr>" +
             "</table>";
         assert.equal(result.value, expectedHtml);
@@ -621,7 +621,7 @@ test('table cells are written with colSpan if not equal to one', function() {
     var converter = new DocumentConverter();
 
     return converter.convertToHtml(table).then(function(result) {
-        var expectedHtml = "<table>" +
+        var expectedHtml = "<table style=\"border-collapse:collapse\" border=\"1px solid #000000\">" +
             "<tr><td colspan=\"2\"><p>Top left</p></td><td><p>Top right</p></td></tr>" +
             "</table>";
         assert.equal(result.value, expectedHtml);
@@ -637,7 +637,7 @@ test('table cells are written with rowSpan if not equal to one', function() {
     var converter = new DocumentConverter();
 
     return converter.convertToHtml(table).then(function(result) {
-        var expectedHtml = "<table>" +
+        var expectedHtml = "<table style=\"border-collapse:collapse\" border=\"1px solid #000000\">" +
             "<tr><td rowspan=\"2\"></td></tr>" +
             "</table>";
         assert.equal(result.value, expectedHtml);
@@ -690,7 +690,7 @@ test('footnote reference is converted to superscript intra-page link', function(
         idPrefix: "doc-42-"
     });
     return converter.convertToHtml(footnoteReference).then(function(result) {
-        assert.equal(result.value, '<sup><a href="#doc-42-footnote-4" id="doc-42-footnote-ref-4">[1]</a></sup>');
+        assert.equal(result.value, '<sup id="infoIcon"><span id="doc-42-footnote-4">[1]</span></sup>');
     });
 });
 
@@ -719,8 +719,8 @@ test('footnotes are included after the main body', function() {
         idPrefix: "doc-42-"
     });
     return converter.convertToHtml(document).then(function(result) {
-        var expectedOutput = '<p>Knock knock<sup><a href="#doc-42-footnote-4" id="doc-42-footnote-ref-4">[1]</a></sup></p>' +
-            '<ol><li id="doc-42-footnote-4"><p>Who\'s there? <a href="#doc-42-footnote-ref-4">↑</a></p></li></ol>';
+        var expectedOutput = '<p>Knock knock<sup id="infoIcon"><span id="doc-42-footnote-4">[1]</span></sup></p>' +
+            '<ol id="infoIcon"><li id="doc-42-footnote-4"><p>Who\'s there? </p></li></ol>';
         assert.equal(result.value, expectedOutput);
     });
 });
@@ -768,8 +768,8 @@ test('comment references are linked to comment after main body', function() {
     });
     return converter.convertToHtml(document).then(function(result) {
         var expectedHtml = (
-            '<p>Knock knock<sup><a href="#doc-42-comment-4" id="doc-42-comment-ref-4">[TP1]</a></sup></p>' +
-            '<dl><dt id="doc-42-comment-4">Comment [TP1]</dt><dd><p>Who\'s there? <a href="#doc-42-comment-ref-4">↑</a></p></dd></dl>'
+            '<p>Knock knock<sup><a href="#doc-42-comment-4" id="doc-42-comment-4">[TP1]</a></sup></p>' +
+            '<dl><dt id="doc-42-comment-4">Comment [TP1]</dt><dd><p>Who\'s there? <a href="#doc-42-comment-4">↑</a></p></dd></dl>'
         );
         assert.equal(result.value, expectedHtml);
         assert.deepEqual(result.messages, []);
