@@ -1,0 +1,15 @@
+# Build workflow — delegates to the shared workflow in MO-Movia/CI.
+# For more information see: https://github.com/MO-Movia/CI
+
+name: build
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [develop, main, master]
+
+jobs:
+  build:
+    # Sonar secrets intentionally not passed — scan and quality-gate steps
+    # are skipped in the shared workflow when SONAR_TOKEN is empty.
+    uses: MO-Movia/CI/.github/workflows/build.yml@main

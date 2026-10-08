@@ -1,10 +1,7 @@
-var assert = require("assert");
-
-var xml = require("../../lib/xml");
-var writer = require("../../lib/xml/writer");
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import assert from "assert";
+import * as xml from "../../lib/xml/index.js";
+import * as writer from "../../lib/xml/writer.js";
 test('writing empty root element writes out xml declaration and empty root element', function() {
     assertXmlString(xml.element("root"), {}, '<root/>');
 });
@@ -72,7 +69,6 @@ test('default namespace has key of empty string', function() {
     assertXmlString(element, {"": "music"},
         '<root xmlns="music"><album/></root>');
 });
-
 
 function assertXmlString(element, namespaces, expectedString) {
     assert.equal(writer.writeString(element, namespaces),

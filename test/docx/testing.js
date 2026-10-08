@@ -1,7 +1,6 @@
-var createBodyReader = require("../../lib/docx/body-reader").createBodyReader;
-var defaultNumbering = require("../../lib/docx/numbering-xml").defaultNumbering;
-var Styles = require("../../lib/docx/styles-reader").Styles;
-
+import {createBodyReader} from "../../lib/docx/body-reader.js";
+import {defaultNumbering} from "../../lib/docx/numbering-xml.js";
+import {Styles} from "../../lib/docx/styles-reader.js";
 function createBodyReaderForTests(options) {
     options = Object.create(options || {});
     options.styles = options.styles || new Styles({}, {});
@@ -9,4 +8,4 @@ function createBodyReaderForTests(options) {
     return createBodyReader(options);
 }
 
-exports.createBodyReaderForTests = createBodyReaderForTests;
+export {createBodyReaderForTests};

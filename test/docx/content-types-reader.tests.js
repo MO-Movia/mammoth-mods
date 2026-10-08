@@ -1,10 +1,7 @@
-var assert = require("assert");
-
-var readContentTypesFromXml = require("../../lib/docx/content-types-reader").readContentTypesFromXml;
-var XmlElement = require("../../lib/xml").Element;
-var test = require("../test")(module);
-
-
+import test from "../test.js";
+import assert from "assert";
+import {readContentTypesFromXml} from "../../lib/docx/content-types-reader.js";
+import {Element as XmlElement} from "../../lib/xml/index.js";
 test('reads default-per-extension from XML', function() {
     var contentTypes = readContentTypesFromXml(
         new XmlElement("content-types:Types", {}, [

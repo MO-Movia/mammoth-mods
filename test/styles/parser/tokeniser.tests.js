@@ -1,11 +1,9 @@
-var hamjest = require("hamjest");
+import test from "../../test.js";
+import hamjest from "hamjest";
+import {tokenise} from "../../../lib/styles/parser/tokeniser.js";
 var assertThat = hamjest.assertThat;
 var contains = hamjest.contains;
 var hasProperties = hamjest.hasProperties;
-
-var tokenise = require("../../../lib/styles/parser/tokeniser").tokenise;
-var test = require("../../test")(module);
-
 
 test("unknown tokens are tokenised", function() {
     assertTokens("~", [isToken("unrecognisedCharacter", "~")]);
@@ -31,8 +29,28 @@ test("strings are tokenised", function() {
     assertTokens("'Tristan'", [isToken("string", "Tristan")]);
 });
 
+test("escaped string terminators in strings are tokenised", function() {
+    assertTokens("'Tristan\\''", [isToken("string", "Tristan\\'")]);
+});
+
+test("escape sequences in strings are tokenised", function() {
+    assertTokens("'Tristan\\\\'", [isToken("string", "Tristan\\\\")]);
+});
+
 test("unterminated strings are tokenised", function() {
     assertTokens("'Tristan", [isToken("unterminated-string", "Tristan")]);
+});
+
+test("unterminated strings ending with escaped string terminator are tokenised", function() {
+    assertTokens("'Tristan\\'", [isToken("unterminated-string", "Tristan\\'")]);
+});
+
+test("unterminated strings with unterminated escape are tokenised", function() {
+    assertTokens("'Tristan\\", [isToken("unterminated-string", "Tristan\\")]);
+});
+
+test("unterminated strings with many escape sequences do not cause excessive backtracking", function() {
+    assertTokens("'" + "\\a".repeat(50), [isToken("unterminated-string", "\\a".repeat(50))]);
 });
 
 test("arrows are tokenised", function() {

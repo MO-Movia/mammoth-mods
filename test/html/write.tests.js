@@ -1,10 +1,7 @@
-var assert = require("assert");
-
-var test = require("../test")(module);
-var html = require("../../lib/html");
-var writers = require("../../lib/writers");
-
-
+import test from "../test.js";
+import assert from "assert";
+import * as html from "../../lib/html/index.js";
+import * as writers from "../../lib/writers/index.js";
 test("text is HTML escaped", function() {
     assert.equal(
         generateString(html.text("<>&")),

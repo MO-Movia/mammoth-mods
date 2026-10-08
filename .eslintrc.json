@@ -1,5 +1,9 @@
 {
   "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
 
   "rules": {
     "curly": ["error", "all"],
@@ -68,7 +72,10 @@
     "console": true,
     "exports": true,
     "module": true,
+    "process": false,
+    "Promise": false,
     "require": false,
+    "setTimeout": false,
     "TextDecoder": false,
     "Uint8Array": false
   }
