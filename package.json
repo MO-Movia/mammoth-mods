@@ -44,9 +44,11 @@
     "./lib/docx/files.js": "./browser/docx/files.js"
   },
   "scripts": {
-    "lint": "",
+    "lint": "eslint lib browser test",
     "pretest": "eslint lib test",
     "test": "mocha 'test/**/*.tests.js'",
+    "test:coverage": "npm test",
+    "ci:build": "rm -rf dist && mkdir -p dist && cp -r lib browser package.json LICENSE README.md dist/",
     "check-typescript": "tsc --noEmit lib/index.d.ts"
   },
   "license": "BSD-2-Clause",
